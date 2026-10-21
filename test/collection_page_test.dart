@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dark_cats_factory/pages/collection_item_details_page.dart';
 import 'package:dark_cats_factory/pages/collection_page.dart';
 import 'package:dark_cats_factory/widgets/cat_card.dart';
 import 'package:flutter/material.dart';
@@ -134,5 +135,40 @@ void main() {
 
     expect(find.text('Failed to load cats'), findsOneWidget);
     expect(find.byType(CatCard), findsNothing);
+  });
+
+  testWidgets('opens the item details page when a card is tapped', (
+    tester,
+  ) async {
+    final repository = _StubCatsRepository();
+    await pumpCollection(tester, repository);
+
+    repository.succeedWith(_cats);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Onyx'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(CollectionItemDetailsPage), findsOneWidget);
+    expect(find.text('Onyx'), findsOneWidget);
+    expect(find.text(_cats.first.description), findsOneWidget);
+  });
+
+  testWidgets('returns to the collection from the details page', (
+    tester,
+  ) async {
+    final repository = _StubCatsRepository();
+    await pumpCollection(tester, repository);
+
+    repository.succeedWith(_cats);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Onyx'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(BackButton));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(CollectionItemDetailsPage), findsNothing);
+    expect(find.byType(CatCard), findsNWidgets(_cats.length));
   });
 }
