@@ -47,8 +47,7 @@ class _CollectionView extends StatelessWidget {
             itemBuilder: (context, index) => CatCard(cat: cats[index]),
           ),
           CollectionLoadFailure() => const _CollectionError(),
-          CollectionInitial() ||
-          CollectionLoadInProgress() => const Center(
+          CollectionInitial() || CollectionLoadInProgress() => const Center(
             child: CircularProgressIndicator(),
           ),
         },

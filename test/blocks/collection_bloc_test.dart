@@ -30,22 +30,25 @@ void main() {
       ]);
     });
 
-    test('emits loading and then a failure when the repository fails', () async {
-      final bloc = CollectionBloc(repository: _FailingCatsRepository());
-      final states = <CollectionState>[];
-      bloc.stream.listen(states.add);
+    test(
+      'emits loading and then a failure when the repository fails',
+      () async {
+        final bloc = CollectionBloc(repository: _FailingCatsRepository());
+        final states = <CollectionState>[];
+        bloc.stream.listen(states.add);
 
-      bloc.add(const CollectionStarted());
-      await bloc.close();
+        bloc.add(const CollectionStarted());
+        await bloc.close();
 
-      expect(states, [
-        const CollectionLoadInProgress(),
-        isA<CollectionLoadFailure>().having(
-          (state) => state.error,
-          'error',
-          isException,
-        ),
-      ]);
-    });
+        expect(states, [
+          const CollectionLoadInProgress(),
+          isA<CollectionLoadFailure>().having(
+            (state) => state.error,
+            'error',
+            isException,
+          ),
+        ]);
+      },
+    );
   });
 }

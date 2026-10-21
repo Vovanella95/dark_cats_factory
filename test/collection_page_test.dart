@@ -27,12 +27,19 @@ Finder _cardOf(String name) =>
     find.ancestor(of: find.text(name), matching: find.byType(CatCard));
 
 void main() {
-  Future<void> pumpCollection(WidgetTester tester, _StubCatsRepository repo) async {
-    await tester.pumpWidget(MaterialApp(home: CollectionPage(repository: repo)));
+  Future<void> pumpCollection(
+    WidgetTester tester,
+    _StubCatsRepository repo,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(home: CollectionPage(repository: repo)),
+    );
     await tester.pump();
   }
 
-  testWidgets('shows a progress indicator while cats are loading', (tester) async {
+  testWidgets('shows a progress indicator while cats are loading', (
+    tester,
+  ) async {
     final repository = _StubCatsRepository();
     await pumpCollection(tester, repository);
 

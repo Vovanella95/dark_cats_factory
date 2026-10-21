@@ -28,12 +28,7 @@ class FakeCatsRepository implements CatsRepository {
       rating: 3,
     ),
     Cat(id: 'noir', name: 'Noir', imageUrl: 'assets/cats/noir.png', rating: 4),
-    Cat(
-      id: 'luna',
-      name: 'Luna',
-      imageUrl: 'assets/cats/luna.png',
-      rating: 2,
-    ),
+    Cat(id: 'luna', name: 'Luna', imageUrl: 'assets/cats/luna.png', rating: 2),
     Cat(
       id: 'salem',
       name: 'Salem',

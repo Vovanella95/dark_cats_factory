@@ -7,9 +7,8 @@ import 'collection_state.dart';
 /// Loads and exposes the collection of cats.
 final class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   /// Creates a bloc that fetches cats through [repository].
-  CollectionBloc({required CatsRepository repository})
-    : _repository = repository,
-      super(const CollectionInitial()) {
+  CollectionBloc({required this._repository})
+    : super(const CollectionInitial()) {
     on<CollectionStarted>(_onStarted);
   }
 

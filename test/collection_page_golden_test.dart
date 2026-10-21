@@ -12,13 +12,15 @@ import 'package:repositories/repositories.dart';
 /// also warms the image cache, so later [Image]s paint without a race.
 Future<void> _waitForImage(ImageProvider provider) {
   final completer = Completer<void>();
-  provider.resolve(const ImageConfiguration()).addListener(
-    ImageStreamListener(
-      (_, _) => completer.complete(),
-      onError: (Object error, StackTrace? stackTrace) =>
-          completer.completeError(error, stackTrace),
-    ),
-  );
+  provider
+      .resolve(const ImageConfiguration())
+      .addListener(
+        ImageStreamListener(
+          (_, _) => completer.complete(),
+          onError: (Object error, StackTrace? stackTrace) =>
+              completer.completeError(error, stackTrace),
+        ),
+      );
   return completer.future;
 }
 
