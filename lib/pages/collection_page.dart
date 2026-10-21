@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:repositories/repositories.dart';
 
 import '../widgets/cat_card.dart';
+import 'collection_item_details_page.dart';
 
 /// Grid of cat cards backed by the [CollectionBloc].
 ///
@@ -29,6 +30,14 @@ class CollectionPage extends StatelessWidget {
 class _CollectionView extends StatelessWidget {
   const _CollectionView();
 
+  void _openDetails(BuildContext context, Cat cat) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => CollectionItemDetailsPage(cat: cat),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +53,13 @@ class _CollectionView extends StatelessWidget {
               childAspectRatio: 0.75,
             ),
             itemCount: cats.length,
-            itemBuilder: (context, index) => CatCard(cat: cats[index]),
+            itemBuilder: (context, index) {
+              final cat = cats[index];
+              return CatCard(
+                cat: cat,
+                onTap: () => _openDetails(context, cat),
+              );
+            },
           ),
           CollectionLoadFailure() => const _CollectionError(),
           CollectionInitial() || CollectionLoadInProgress() => const Center(

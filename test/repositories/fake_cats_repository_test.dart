@@ -30,6 +30,11 @@ void main() {
             inInclusiveRange(1, 5),
             reason: 'cat ${cat.id} has an out-of-range rating',
           );
+          expect(
+            cat.description,
+            isNotEmpty,
+            reason: 'cat ${cat.id} has no description',
+          );
         }
       },
     );

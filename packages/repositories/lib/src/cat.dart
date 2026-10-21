@@ -7,6 +7,7 @@ final class Cat extends Equatable {
     required this.name,
     required this.imageUrl,
     required this.rating,
+    required this.description,
   }) : assert(
          rating >= 1 && rating <= 5,
          'rating must be between 1 and 5 stars',
@@ -23,6 +24,9 @@ final class Cat extends Equatable {
 
   /// Star rating of the cat, from 1 to 5.
   final int rating;
+
+  /// Additional description shown on the item details page.
+  final String description;
 
   @override
   List<Object?> get props => [id, name, imageUrl, rating];
