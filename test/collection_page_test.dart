@@ -18,9 +18,27 @@ class _StubCatsRepository implements CatsRepository {
 }
 
 const _cats = [
-  Cat(id: 'onyx', name: 'Onyx', imageUrl: 'assets/cats/onyx.png', rating: 5),
-  Cat(id: 'salem', name: 'Salem', imageUrl: 'assets/cats/salem.png', rating: 1),
-  Cat(id: 'luna', name: 'Luna', imageUrl: 'assets/cats/luna.png', rating: 2),
+  Cat(
+    id: 'onyx',
+    name: 'Onyx',
+    imageUrl: 'assets/cats/onyx.png',
+    rating: 5,
+    description: 'Glossy black show cat.',
+  ),
+  Cat(
+    id: 'salem',
+    name: 'Salem',
+    imageUrl: 'assets/cats/salem.png',
+    rating: 1,
+    description: 'Chaotic little goblin.',
+  ),
+  Cat(
+    id: 'luna',
+    name: 'Luna',
+    imageUrl: 'assets/cats/luna.png',
+    rating: 2,
+    description: 'Shy moonlit dreamer.',
+  ),
 ];
 
 Finder _cardOf(String name) =>
