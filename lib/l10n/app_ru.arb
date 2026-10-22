@@ -1,0 +1,15 @@
+{
+  "appTitle": "Dark Cats Factory",
+  "startButton": "Начать",
+  "homeTitle": "Главная",
+  "exploreTitle": "Обзор",
+  "collectionTitle": "Коллекция",
+  "profileTitle": "Профиль",
+  "failedToLoadCats": "Не удалось загрузить котов",
+  "deleteButton": "Удалить",
+  "shareButton": "Поделиться",
+  "settingsTitle": "Настройки",
+  "languageSetting": "Язык",
+  "switchLanguageButton": "Сменить язык",
+  "systemLanguage": "Системный"
+}

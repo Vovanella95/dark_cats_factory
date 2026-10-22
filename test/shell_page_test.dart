@@ -1,15 +1,22 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-
+import 'package:blocks/blocks.dart';
+import 'package:dark_cats_factory/l10n/app_localizations.dart';
 import 'package:dark_cats_factory/pages/collection_page.dart';
 import 'package:dark_cats_factory/pages/explore_page.dart';
 import 'package:dark_cats_factory/pages/home_page.dart';
 import 'package:dark_cats_factory/pages/profile_page.dart';
 import 'package:dark_cats_factory/pages/shell_page.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   Future<void> pumpShell(WidgetTester tester) async {
-    await tester.pumpWidget(const MaterialApp(home: ShellPage()));
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: appSupportedLocales,
+        home: const ShellPage(),
+      ),
+    );
     await tester.pumpAndSettle();
   }
 

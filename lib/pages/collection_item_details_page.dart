@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:repositories/repositories.dart';
 
+import '../l10n/app_localizations.dart';
 import '../widgets/star_rating.dart';
 
 /// Full-screen details of a single collection item.
@@ -30,6 +31,7 @@ class CollectionItemDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(),
@@ -66,7 +68,7 @@ class CollectionItemDetailsPage extends StatelessWidget {
                     foregroundColor: colorScheme.error,
                   ),
                   icon: const Icon(Icons.delete_outline),
-                  label: const Text('Delete'),
+                  label: Text(l10n.deleteButton),
                 ),
               ),
               const SizedBox(width: 12),
@@ -74,7 +76,7 @@ class CollectionItemDetailsPage extends StatelessWidget {
                 child: FilledButton.icon(
                   onPressed: onShare,
                   icon: const Icon(Icons.share),
-                  label: const Text('Share'),
+                  label: Text(l10n.shareButton),
                 ),
               ),
             ],

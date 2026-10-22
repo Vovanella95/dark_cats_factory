@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:repositories/repositories.dart';
 
+import '../l10n/app_localizations.dart';
 import '../widgets/cat_card.dart';
 import 'collection_item_details_page.dart';
 
@@ -40,8 +41,10 @@ class _CollectionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Collection')),
+      appBar: AppBar(title: Text(l10n.collectionTitle)),
       body: BlocBuilder<CollectionBloc, CollectionState>(
         builder: (context, state) => switch (state) {
           CollectionLoadSuccess(:final cats) => GridView.builder(
@@ -55,10 +58,7 @@ class _CollectionView extends StatelessWidget {
             itemCount: cats.length,
             itemBuilder: (context, index) {
               final cat = cats[index];
-              return CatCard(
-                cat: cat,
-                onTap: () => _openDetails(context, cat),
-              );
+              return CatCard(cat: cat, onTap: () => _openDetails(context, cat));
             },
           ),
           CollectionLoadFailure() => const _CollectionError(),
@@ -86,7 +86,7 @@ class _CollectionError extends StatelessWidget {
             color: Theme.of(context).colorScheme.error,
           ),
           const SizedBox(height: 8),
-          const Text('Failed to load cats'),
+          Text(AppLocalizations.of(context).failedToLoadCats),
         ],
       ),
     );

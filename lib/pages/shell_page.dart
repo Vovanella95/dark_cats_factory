@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import 'collection_page.dart';
 import 'explore_page.dart';
 import 'home_page.dart';
@@ -45,6 +46,14 @@ class _ShellPageState extends State<ShellPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final labels = {
+      ShellDestination.home: l10n.homeTitle,
+      ShellDestination.explore: l10n.exploreTitle,
+      ShellDestination.collection: l10n.collectionTitle,
+      ShellDestination.profile: l10n.profileTitle,
+    };
+
     return Scaffold(
       body: IndexedStack(
         index: _destination.index,
@@ -58,15 +67,10 @@ class _ShellPageState extends State<ShellPage> {
             NavigationDestination(
               icon: Icon(_icons[destination]!.$1),
               selectedIcon: Icon(_icons[destination]!.$2),
-              label: destination.name.capitalize,
+              label: labels[destination]!,
             ),
         ],
       ),
     );
   }
-}
-
-extension on String {
-  String get capitalize =>
-      isEmpty ? this : '${this[0].toUpperCase()}${substring(1)}';
 }
