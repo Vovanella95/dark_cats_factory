@@ -36,7 +36,7 @@ on:
     # to the machine login); label events let the pr_approved re-entry and
     # manual agent:review/agent:rework overrides reach the guard. The awf
     # guard skips status-label echoes at evaluation.
-    types: [assigned]
+    types: [labeled, assigned]
   workflow_dispatch:
     inputs:
       issue:
