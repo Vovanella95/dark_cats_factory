@@ -2,6 +2,8 @@
 
 A new Flutter project.
 
+![CRAP](badges/crap.svg)
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
