@@ -120,3 +120,6 @@ app.*.symbols
 # Agent task harness artifacts (not part of the app)
 /input/
 /outputs/
+
+# Agent session artifacts
+/.fah/
