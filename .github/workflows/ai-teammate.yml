@@ -119,13 +119,13 @@ jobs:
 
   teammate:
     needs: dedupe
-    # Assignment gate: issues must be ASSIGNED to ai-teammate; the
+    # Assignment gate: issues must be ASSIGNED to ai-vovanella; the
     # pr_approved label re-entry (merge bot arming) and dispatch runs (SM /
     # manual leg override) reach the factory even with empty gate outputs.
     if: >-
       needs.dedupe.outputs.duplicate != 'true' &&
       ((github.event_name == 'issues' &&
-       contains(github.event.issue.assignees.*.login, 'ai-teammate')) ||
+       contains(github.event.issue.assignees.*.login, 'ai-vovanella')) ||
       (github.event_name == 'issues' &&
        github.event.label.name == 'pr_approved') ||
       github.event_name == 'workflow_dispatch')
@@ -136,7 +136,7 @@ jobs:
       leg: ${{ github.event.inputs.leg || '' }}
       reason: ${{ github.event.inputs.reason || github.event_name }}
       pr: ${{ github.event.inputs.pr || '' }}
-      machine-author: 'ai-teammate'
+      machine-author: 'ai-vovanella'
       # Toolchains the agent legs install (cached). Unlisted = nothing installed.
       flutter-version: 'stable'
       CUSTOM_PROVIDER_KEY1_NAME: 'ZAI_API_KEY'
