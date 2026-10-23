@@ -22,16 +22,18 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  List<ListTile> menuTiles(WidgetTester tester) =>
-      tester
-          .widgetList<ListTile>(find.byType(ListTile))
-          .toList(growable: false);
+  List<ListTile> menuTiles(WidgetTester tester) => tester
+      .widgetList<ListTile>(find.byType(ListTile))
+      .toList(growable: false);
 
   testWidgets('screen is titled settings', (tester) async {
     await pumpSettings(tester);
 
     expect(find.byType(AppBar), findsOneWidget);
-    expect(find.descendant(of: find.byType(AppBar), matching: find.text('Settings')), findsOneWidget);
+    expect(
+      find.descendant(of: find.byType(AppBar), matching: find.text('Settings')),
+      findsOneWidget,
+    );
   });
 
   testWidgets('shows the profile info above the menu', (tester) async {
