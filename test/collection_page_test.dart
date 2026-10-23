@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:blocks/blocks.dart';
+import 'package:dark_cats_factory/l10n/app_localizations.dart';
 import 'package:dark_cats_factory/pages/collection_item_details_page.dart';
 import 'package:dark_cats_factory/pages/collection_page.dart';
 import 'package:dark_cats_factory/widgets/cat_card.dart';
@@ -51,7 +53,11 @@ void main() {
     _StubCatsRepository repo,
   ) async {
     await tester.pumpWidget(
-      MaterialApp(home: CollectionPage(repository: repo)),
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: appSupportedLocales,
+        home: CollectionPage(repository: repo),
+      ),
     );
     await tester.pump();
   }

@@ -1,3 +1,5 @@
+import 'package:blocks/blocks.dart';
+import 'package:dark_cats_factory/l10n/app_localizations.dart';
 import 'package:dark_cats_factory/pages/collection_item_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -19,6 +21,8 @@ Future<void> pumpDetails(
 }) async {
   await tester.pumpWidget(
     MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: appSupportedLocales,
       home: CollectionItemDetailsPage(
         cat: cat,
         onDelete: onDelete,
@@ -75,8 +79,8 @@ void main() {
     expect(share, findsOneWidget);
 
     // Both buttons sit at the bottom of the page.
-    final viewHeight = tester.view.physicalSize.height /
-        tester.view.devicePixelRatio;
+    final viewHeight =
+        tester.view.physicalSize.height / tester.view.devicePixelRatio;
     expect(
       tester.getBottomRight(delete).dy,
       greaterThan(viewHeight / 2),

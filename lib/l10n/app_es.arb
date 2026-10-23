@@ -1,0 +1,15 @@
+{
+  "appTitle": "Dark Cats Factory",
+  "startButton": "Empezar",
+  "homeTitle": "Inicio",
+  "exploreTitle": "Explorar",
+  "collectionTitle": "Colección",
+  "profileTitle": "Perfil",
+  "failedToLoadCats": "No se pudieron cargar los gatos",
+  "deleteButton": "Eliminar",
+  "shareButton": "Compartir",
+  "settingsTitle": "Ajustes",
+  "languageSetting": "Idioma",
+  "switchLanguageButton": "Cambiar idioma",
+  "systemLanguage": "Del sistema"
+}

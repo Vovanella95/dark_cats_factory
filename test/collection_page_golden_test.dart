@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:blocks/blocks.dart';
+import 'package:dark_cats_factory/l10n/app_localizations.dart';
 import 'package:dark_cats_factory/pages/collection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -30,7 +32,13 @@ void main() {
     tester.view.physicalSize = const Size(390, 844);
     addTearDown(tester.view.reset);
 
-    await tester.pumpWidget(const MaterialApp(home: CollectionPage()));
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: appSupportedLocales,
+        home: const CollectionPage(),
+      ),
+    );
 
     // Decode every fake cat picture before settling, so the grid is painted
     // with the loaded images instead of racing the golden capture.
