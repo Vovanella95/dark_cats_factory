@@ -13,10 +13,7 @@ final class NewsBloc extends Bloc<NewsEvent, NewsState> {
 
   final NewsRepository _repository;
 
-  Future<void> _onStarted(
-    NewsStarted event,
-    Emitter<NewsState> emit,
-  ) async {
+  Future<void> _onStarted(NewsStarted event, Emitter<NewsState> emit) async {
     emit(const NewsLoadInProgress());
     try {
       emit(NewsLoadSuccess(await _repository.fetchNews()));

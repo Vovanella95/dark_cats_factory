@@ -30,22 +30,25 @@ void main() {
       ]);
     });
 
-    test('emits loading and then a failure when the repository fails', () async {
-      final bloc = NewsBloc(repository: _FailingNewsRepository());
-      final states = <NewsState>[];
-      bloc.stream.listen(states.add);
+    test(
+      'emits loading and then a failure when the repository fails',
+      () async {
+        final bloc = NewsBloc(repository: _FailingNewsRepository());
+        final states = <NewsState>[];
+        bloc.stream.listen(states.add);
 
-      bloc.add(const NewsStarted());
-      await bloc.close();
+        bloc.add(const NewsStarted());
+        await bloc.close();
 
-      expect(states, [
-        const NewsLoadInProgress(),
-        isA<NewsLoadFailure>().having(
-          (state) => state.error,
-          'error',
-          isException,
-        ),
-      ]);
-    });
+        expect(states, [
+          const NewsLoadInProgress(),
+          isA<NewsLoadFailure>().having(
+            (state) => state.error,
+            'error',
+            isException,
+          ),
+        ]);
+      },
+    );
   });
 }
