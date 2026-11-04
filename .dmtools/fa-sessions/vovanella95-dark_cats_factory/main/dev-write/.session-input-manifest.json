@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-11-04T08:04:25.182Z",
+  "ticketKey": "gh-18",
+  "headSha": "e41219703cd0626c1aa17ab16be555d98639daef",
+  "baseBranch": "main",
+  "reviewDecision": "NONE",
+  "labels": [],
+  "files": {
+    "ci_failures.md": {
+      "hash": "fnv1a64:322b878d3c3c2465",
+      "size": 288
+    },
+    "pr_diff.txt": {
+      "hash": "fnv1a64:bf73ec250d8eb245",
+      "size": 12306
+    },
+    "pr_discussions.md": {
+      "hash": "fnv1a64:f6d4f18bef393d27",
+      "size": 9858
+    },
+    "pr_discussions_raw.json": {
+      "hash": "fnv1a64:681d71d51cfc9694",
+      "size": 5269
+    },
+    "pr_info.md": {
+      "hash": "fnv1a64:5ca3858c4744410b",
+      "size": 1679
+    },
+    "request.md": {
+      "hash": "fnv1a64:a57b3a334b5d9c83",
+      "size": 409
+    },
+    "review_state.md": {
+      "hash": "fnv1a64:b6b5eeb5b7af8ae7",
+      "size": 1218
+    },
+    "rework_base_head.txt": {
+      "hash": "fnv1a64:8dfa0593c9f427bd",
+      "size": 40
+    },
+    "ticket.json": {
+      "hash": "fnv1a64:83872fb29471e967",
+      "size": 465
+    },
+    "ticket.md": {
+      "hash": "fnv1a64:a57b3a334b5d9c83",
+      "size": 409
+    }
+  },
+  "comments": [
+    {
+      "id": "PRRT_kwDOVQ79cs6yo9lH",
+      "kind": "review_thread",
+      "author": "unknown",
+      "createdAt": "",
+      "updatedAt": "",
+      "location": ".dmtools-target-workingdir:1",
+      "resolved": false,
+      "body": "⚠️ **IMPORTANT: Stray tool artifact committed**\n\n`.dmtools-target-workingdir` is a 1-byte local tool marker (its only content is `.`) that got committed to the branch by the `gh-18 WIP auto-save 2026-11-02T11-05-54` commit.\n\n- It does **not** exist on `main` (checked `git ls-tree origin/main`), unlike the `.fah/trajectories/**` files, which are an established pattern in this repo from previous merged PRs.\n- It is not covered by `.gitignore`, so it will sit at the repo root forever and every future session may re-commit variants of it.\n\nPlease remove it from this PR:\n\n```bash\ngit rm --cached .dmtools-target-workingdir\n```\n\nand consider adding it to `.gitignore` so the auto-save flow stops picking it up.\n\nNon-blocking for functionality — analyze/tests are green — but it is unrelated to the gh-18 ticket scope and pollutes the tree."
+    },
+    {
+      "id": "PRRT_kwDOVQ79cs6yo9pX",
+      "kind": "review_thread",
+      "author": "unknown",
+      "createdAt": "",
+      "updatedAt": "",
+      "location": "packages/repositories/lib/repositories.dart:9",
+      "resolved": false,
+      "body": "💡 **SUGGESTION: Barrel export order**\n\n`packages/repositories/lib/repositories.dart` is otherwise alphabetically ordered (`cat`, `cats_repository`, `fake_cats_repository`), and the sibling barrel `packages/blocks/lib/blocks.dart` keeps the new `src/news/*` exports alphabetical too. Here `fake_news_repository.dart` lands *after* `news_item.dart`/`news_repository.dart`:\n\n```dart\nexport 'src/cat.dart';\nexport 'src/cats_repository.dart';\nexport 'src/fake_cats_repository.dart';\nexport 'src/news_item.dart';\nexport 'src/news_repository.dart';\nexport 'src/fake_news_repository.dart'; // ← sorts before news_item\n```\n\nPurely cosmetic — move it directly below `fake_cats_repository.dart` for consistency. No behavior change."
+    },
+    {
+      "id": "PRRT_kwDOVQ79cs6yo9sy",
+      "kind": "review_thread",
+      "author": "unknown",
+      "createdAt": "",
+      "updatedAt": "",
+      "location": "test/home_page_golden_test.dart:13",
+      "resolved": false,
+      "body": "💡 **SUGGESTION: Third copy of the `_waitForImage` golden helper**\n\nThis PR copy-pastes the 15-line `_waitForImage` helper into `test/home_page_golden_test.dart` — it is byte-for-byte identical to the copies in `test/collection_page_golden_test.dart:13` and `test/collection_item_details_page_golden_test.dart:13`. This is now the third duplicate in the suite.\n\nConsider extracting it once, e.g. `test/golden_test_helpers.dart`:\n\n```dart\n/// Waits until [provider] delivers a decoded image (see golden tests).\nFuture<void> waitForImage(ImageProvider provider) { ... }\n```\n\nand importing it from all three golden tests. Keeping the doc comment about the real-event-loop image codec in one place also prevents the copies from drifting. Optional polish — the copy itself is correct and mirrors the existing pattern."
+    },
+    {
+      "id": "PRRT_kwDOVQ79cs6yo9xO",
+      "kind": "review_thread",
+      "author": "unknown",
+      "createdAt": "",
+      "updatedAt": "",
+      "location": "lib/pages/home_page.dart:44",
+      "resolved": false,
+      "body": "💡 **SUGGESTION: No retry affordance on the failure state**\n\n`NewsLoadFailure` renders only a static \"Failed to load news\" message. Because the feed loads once via `NewsStarted` from `BlocProvider.create`, a user who hits a transient failure has no way to retry except restarting the app:\n\n```dart\nNewsLoadFailure() => const _HomeError(), // dead end — bloc supports re-dispatch\n```\n\n`NewsBloc` already registers `on<NewsStarted>(...)`, so a retry is a one-liner away — give `_HomeError` an optional callback and wire a button:\n\n```dart\nNewsLoadFailure() => _HomeError(\n  onRetry: () => context.read<NewsBloc>().add(const NewsStarted()),\n),\n```\n\nNote: `_CollectionError` in `CollectionPage` has the same gap, so this is pre-existing app-wide behavior, not a regression introduced here — fine to defer to a shared follow-up ticket covering both pages."
+    },
+    {
+      "id": "PRRT_kwDOVQ79cs6yo91W",
+      "kind": "review_thread",
+      "author": "unknown",
+      "createdAt": "",
+      "updatedAt": "",
+      "location": "lib/widgets/news_card.dart:27",
+      "resolved": false,
+      "body": "💡 **SUGGESTION: Hardcoded English month names**\n\n`NewsCard._formatDate` renders dates with a private English month table:\n\n```dart\nString _formatDate(DateTime date) =>\n    '${date.day} ${_monthNames[date.month - 1]} ${date.year}';\n```\n\nThe PR description documents the \"no `intl`\" decision, and since the entire app hardcodes English strings (`'Home'`, `'Failed to load news'`, …) this is consistent today. Just flagging for the future: if/when localization arrives, `DateFormat.yMMMd(locale)` (or a shared formatter util) should replace this, because a per-widget month table is exactly the kind of string that silently stays English in a localized app. No change requested now."
+    },
+    {
+      "id": "pr_discussions.md:Vovanella95:2026-11-02:09f453f8",
+      "kind": "comment",
+      "author": "Vovanella95",
+      "createdAt": "2026-11-02",
+      "updatedAt": "2026-11-02",
+      "location": "pr_discussions.md",
+      "resolved": false,
+      "body": "⚠️ **IMPORTANT: Stray tool artifact committed**\n\n`.dmtools-target-workingdir` is a 1-byte local tool marker (its only content is `.`) that got committed to the branch by the `gh-18 WIP auto-save 2026-11-02T11-05-54` commit.\n\n- It does **not** exist on `main` (checked `git ls-tree origin/main`), unlike the `.fah/trajectories/**` files, which are an established pattern in this repo from previous merged PRs.\n- It is not covered by `.gitignore`, so it will sit at the repo root forever and every future session may re-commit variants of it.\n\nPlease remove it from this PR:\n\n```bash\ngit rm --cached .dmtools-target-workingdir\n```\n\nand consider adding it to `.gitignore` so the auto-save flow stops picking it up.\n\nNon-blocking for functionality — analyze/tests are green — but it is unrelated to the gh-18 ticket scope and pollutes the tree."
+    },
+    {
+      "id": "pr_discussions.md:Vovanella95:2026-11-02:79083639",
+      "kind": "comment",
+      "author": "Vovanella95",
+      "createdAt": "2026-11-02",
+      "updatedAt": "2026-11-02",
+      "location": "pr_discussions.md",
+      "resolved": false,
+      "body": "💡 **SUGGESTION: Barrel export order**\n\n`packages/repositories/lib/repositories.dart` is otherwise alphabetically ordered (`cat`, `cats_repository`, `fake_cats_repository`), and the sibling barrel `packages/blocks/lib/blocks.dart` keeps the new `src/news/*` exports alphabetical too. Here `fake_news_repository.dart` lands *after* `news_item.dart`/`news_repository.dart`:\n\n```dart\nexport 'src/cat.dart';\nexport 'src/cats_repository.dart';\nexport 'src/fake_cats_repository.dart';\nexport 'src/news_item.dart';\nexport 'src/news_repository.dart';\nexport 'src/fake_news_repository.dart'; // ← sorts before news_item\n```\n\nPurely cosmetic — move it directly below `fake_cats_repository.dart` for consistency. No behavior change."
+    },
+    {
+      "id": "pr_discussions.md:Vovanella95:2026-11-02:ae76699f",
+      "kind": "comment",
+      "author": "Vovanella95",
+      "createdAt": "2026-11-02",
+      "updatedAt": "2026-11-02",
+      "location": "pr_discussions.md",
+      "resolved": false,
+      "body": "💡 **SUGGESTION: Third copy of the `_waitForImage` golden helper**\n\nThis PR copy-pastes the 15-line `_waitForImage` helper into `test/home_page_golden_test.dart` — it is byte-for-byte identical to the copies in `test/collection_page_golden_test.dart:13` and `test/collection_item_details_page_golden_test.dart:13`. This is now the third duplicate in the suite.\n\nConsider extracting it once, e.g. `test/golden_test_helpers.dart`:\n\n```dart\n/// Waits until [provider] delivers a decoded image (see golden tests).\nFuture<void> waitForImage(ImageProvider provider) { ... }\n```\n\nand importing it from all three golden tests. Keeping the doc comment about the real-event-loop image codec in one place also prevents the copies from drifting. Optional polish — the copy itself is correct and mirrors the existing pattern."
+    },
+    {
+      "id": "pr_discussions.md:Vovanella95:2026-11-02:141141fa",
+      "kind": "comment",
+      "author": "Vovanella95",
+      "createdAt": "2026-11-02",
+      "updatedAt": "2026-11-02",
+      "location": "pr_discussions.md",
+      "resolved": false,
+      "body": "💡 **SUGGESTION: No retry affordance on the failure state**\n\n`NewsLoadFailure` renders only a static \"Failed to load news\" message. Because the feed loads once via `NewsStarted` from `BlocProvider.create`, a user who hits a transient failure has no way to retry except restarting the app:\n\n```dart\nNewsLoadFailure() => const _HomeError(), // dead end — bloc supports re-dispatch\n```\n\n`NewsBloc` already registers `on<NewsStarted>(...)`, so a retry is a one-liner away — give `_HomeError` an optional callback and wire a button:\n\n```dart\nNewsLoadFailure() => _HomeError(\n  onRetry: () => context.read<NewsBloc>().add(const NewsStarted()),\n),\n```\n\nNote: `_CollectionError` in `CollectionPage` has the same gap, so this is pre-existing app-wide behavior, not a regression introduced here — fine to defer to a shared follow-up ticket covering both pages."
+    },
+    {
+      "id": "pr_discussions.md:Vovanella95:2026-11-02:e4089557",
+      "kind": "comment",
+      "author": "Vovanella95",
+      "createdAt": "2026-11-02",
+      "updatedAt": "2026-11-02",
+      "location": "pr_discussions.md",
+      "resolved": false,
+      "body": "💡 **SUGGESTION: Hardcoded English month names**\n\n`NewsCard._formatDate` renders dates with a private English month table:\n\n```dart\nString _formatDate(DateTime date) =>\n    '${date.day} ${_monthNames[date.month - 1]} ${date.year}';\n```\n\nThe PR description documents the \"no `intl`\" decision, and since the entire app hardcodes English strings (`'Home'`, `'Failed to load news'`, …) this is consistent today. Just flagging for the future: if/when localization arrives, `DateFormat.yMMMd(locale)` (or a shared formatter util) should replace this, because a per-widget month table is exactly the kind of string that silently stays English in a localized app. No change requested now."
+    },
+    {
+      "id": "pr_discussions.md:Vovanella95:2026-11-02:c7d69485",
+      "kind": "comment",
+      "author": "Vovanella95",
+      "createdAt": "2026-11-02",
+      "updatedAt": "2026-11-02",
+      "location": "pr_discussions.md",
+      "resolved": false,
+      "body": "## Automated Code Review — APPROVE (with suggestions)\n\n**Summary**: gh-18 implemented correctly — `HomePage` news feed follows the established `CollectionPage`/`CatCard` architecture (repository + bloc + sealed states, barrel exports, `NewsCard` mirroring `CatCard`), adds 13 meaningful tests (repository, bloc, page, golden), no new dependencies. Verified in this run: `flutter analyze` → no issues; `flutter test` → **46 passed** (matches the PR description). No blocking findings; ticket AC \"implement home screen with a fake news feed with images\" is fully satisfied.\n\n**Key Issues**:\n- ⚠️ **IMPORTANT** — `.dmtools-target-workingdir` (1-byte tool artifact) was committed by a WIP auto-save; it is not on `main` and not gitignored. Remove it from the branch.\n- 💡 4 suggestions — barrel export order, third copy of the `_waitForImage` golden helper, no retry affordance on the failure state, hardcoded English month names.\n\n**Next Steps**:\n1. Remove `.dmtools-target-workingdir` from the commit (and consider gitignoring it) — everything else is mergeable as is.\n2. Optionally apply the suggestion-level polish items in a follow-up."
+    }
+  ]
+}
