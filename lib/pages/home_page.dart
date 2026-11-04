@@ -54,7 +54,10 @@ class _HomeView extends StatelessWidget {
 }
 
 class _HomeError extends StatelessWidget {
-  const _HomeError();
+  const _HomeError({this.onRetry});
+
+  /// Called when the user taps "Retry"; the button is hidden when null.
+  final VoidCallback? onRetry;
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +72,8 @@ class _HomeError extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           const Text('Failed to load news'),
+          if (onRetry != null)
+            TextButton(onPressed: onRetry, child: const Text('Retry')),
         ],
       ),
     );
