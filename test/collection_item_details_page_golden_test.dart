@@ -1,28 +1,9 @@
-import 'dart:async';
-
 import 'package:dark_cats_factory/pages/collection_item_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:repositories/repositories.dart';
 
-/// Waits until [provider] delivers a decoded image.
-///
-/// Mirrors the helper in `collection_page_golden_test.dart`: the codec runs
-/// on the real event loop, so this must be called inside
-/// [WidgetTester.runAsync].
-Future<void> _waitForImage(ImageProvider provider) {
-  final completer = Completer<void>();
-  provider
-      .resolve(const ImageConfiguration())
-      .addListener(
-        ImageStreamListener(
-          (_, _) => completer.complete(),
-          onError: (Object error, StackTrace? stackTrace) =>
-              completer.completeError(error, stackTrace),
-        ),
-      );
-  return completer.future;
-}
+import 'golden_test_helpers.dart';
 
 void main() {
   testWidgets('collection item details page matches the golden', (
@@ -55,7 +36,7 @@ void main() {
     // Decode the picture before settling, so the page is painted with the
     // loaded image instead of racing the golden capture.
     await tester.runAsync(() async {
-      await _waitForImage(AssetImage(cat.imageUrl));
+      await waitForImage(AssetImage(cat.imageUrl));
     });
 
     await tester.pumpAndSettle();

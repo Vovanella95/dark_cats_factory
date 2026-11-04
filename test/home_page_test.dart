@@ -7,11 +7,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:repositories/repositories.dart';
 
 class _StubNewsRepository implements NewsRepository {
-  final Completer<List<NewsItem>> _completer = Completer<List<NewsItem>>();
+  Completer<List<NewsItem>> _completer = Completer<List<NewsItem>>();
 
   void succeedWith(List<NewsItem> news) => _completer.complete(news);
 
   void failWith(Object error) => _completer.completeError(error);
+
+  /// Queues the answer of the next fetch, e.g. after a failed attempt.
+  void succeedNextWith(List<NewsItem> news) {
+    _completer = Completer<List<NewsItem>>()..complete(news);
+  }
 
   @override
   Future<List<NewsItem>> fetchNews() => _completer.future;
@@ -134,5 +139,26 @@ void main() {
 
     expect(find.text('Failed to load news'), findsOneWidget);
     expect(find.byType(NewsCard), findsNothing);
+  });
+
+  testWidgets('retries loading when the retry action is tapped', (
+    tester,
+  ) async {
+    final repository = _StubNewsRepository();
+    await pumpHome(tester, repository);
+
+    repository.failWith(Exception('boom'));
+    await tester.pumpAndSettle();
+    expect(find.text('Failed to load news'), findsOneWidget);
+
+    repository.succeedNextWith(_news);
+    await tester.tap(find.text('Retry'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Failed to load news'), findsNothing);
+    expect(find.byType(NewsCard), findsNWidgets(_news.length));
+    for (final item in _news) {
+      expect(find.text(item.title), findsOneWidget);
+    }
   });
 }

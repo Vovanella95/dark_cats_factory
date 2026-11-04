@@ -41,7 +41,9 @@ class _HomeView extends StatelessWidget {
             separatorBuilder: (_, _) => const SizedBox(height: 8),
             itemBuilder: (context, index) => NewsCard(item: news[index]),
           ),
-          NewsLoadFailure() => const _HomeError(),
+          NewsLoadFailure() => _HomeError(
+            onRetry: () => context.read<NewsBloc>().add(const NewsStarted()),
+          ),
           NewsInitial() || NewsLoadInProgress() => const Center(
             child: CircularProgressIndicator(),
           ),
