@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'collection_page.dart';
 import 'explore_page.dart';
 import 'home_page.dart';
-import 'profile_page.dart';
+import 'settings_page.dart';
 
 /// The destinations offered by the [ShellPage], in display order.
 enum ShellDestination { home, explore, collection, profile }
@@ -26,7 +26,7 @@ class _ShellPageState extends State<ShellPage> {
     ShellDestination.home: HomePage(),
     ShellDestination.explore: ExplorePage(),
     ShellDestination.collection: CollectionPage(),
-    ShellDestination.profile: ProfilePage(),
+    ShellDestination.profile: SettingsPage(),
   };
 
   static const Map<ShellDestination, (IconData, IconData)> _icons = {

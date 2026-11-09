@@ -55,10 +55,7 @@ class _CollectionView extends StatelessWidget {
             itemCount: cats.length,
             itemBuilder: (context, index) {
               final cat = cats[index];
-              return CatCard(
-                cat: cat,
-                onTap: () => _openDetails(context, cat),
-              );
+              return CatCard(cat: cat, onTap: () => _openDetails(context, cat));
             },
           ),
           CollectionLoadFailure() => const _CollectionError(),
