@@ -75,8 +75,8 @@ void main() {
     expect(share, findsOneWidget);
 
     // Both buttons sit at the bottom of the page.
-    final viewHeight = tester.view.physicalSize.height /
-        tester.view.devicePixelRatio;
+    final viewHeight =
+        tester.view.physicalSize.height / tester.view.devicePixelRatio;
     expect(
       tester.getBottomRight(delete).dy,
       greaterThan(viewHeight / 2),

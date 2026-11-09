@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:dark_cats_factory/pages/collection_page.dart';
 import 'package:dark_cats_factory/pages/explore_page.dart';
 import 'package:dark_cats_factory/pages/home_page.dart';
-import 'package:dark_cats_factory/pages/profile_page.dart';
+import 'package:dark_cats_factory/pages/settings_page.dart';
 import 'package:dark_cats_factory/pages/shell_page.dart';
 
 void main() {
@@ -47,7 +47,7 @@ void main() {
     expect(find.byType(HomePage), findsOneWidget);
     expect(find.byType(ExplorePage), findsNothing);
     expect(find.byType(CollectionPage), findsNothing);
-    expect(find.byType(ProfilePage), findsNothing);
+    expect(find.byType(SettingsPage), findsNothing);
   });
 
   testWidgets('explore destination shows the explore page', (tester) async {
@@ -69,12 +69,12 @@ void main() {
     expect(find.byType(CollectionPage), findsOneWidget);
   });
 
-  testWidgets('profile destination shows the profile page', (tester) async {
+  testWidgets('profile destination shows the settings page', (tester) async {
     await pumpShell(tester);
 
     await tapDestination(tester, 'Profile');
 
-    expect(find.byType(ProfilePage), findsOneWidget);
+    expect(find.byType(SettingsPage), findsOneWidget);
   });
 
   testWidgets('visited destinations stay alive while switching tabs', (
